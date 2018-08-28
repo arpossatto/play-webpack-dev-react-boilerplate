@@ -1,4 +1,4 @@
-import play.PlayImport.PlayKeys.playRunHooks
+import PlayKeys.playRunHooks
 
 name := "myApp"
 
@@ -26,9 +26,9 @@ lazy val deployCmd = if (RunSubProcess.isWindows) s"cmd /c ${deployRawCmd}" else
 
 webpackDist := (Process(deployCmd, file("ui")).run)
 
-dist <<= dist dependsOn webpackDist
+dist := { (dist dependsOn webpackDist).value }
 
-stage <<= stage dependsOn webpackDist
+stage := { (stage dependsOn webpackDist).value }
 
 lazy val webPackDevCmd = nodeBinPath + "webpack-dev-server --config webpack.config.dev.js --hot --inline"
 
